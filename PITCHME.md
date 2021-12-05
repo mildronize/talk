@@ -1,7 +1,7 @@
 ---
 marp: true
-title: Marp CLI example
-description: Hosting Marp slide deck on the web
+title: No Type No Life (TypeScript) 
+description: Without type, we may die!
 theme: uncover
 paginate: true
 _paginate: false
