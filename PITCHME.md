@@ -155,10 +155,37 @@ Better?
 ```js
 const result = await fetch('https://domain.com');
 for(const member of result.response.data.members){
-    console.log(member.customers);
-    
+  console.log(`My customer: `);
+  for(const customer of member.business.customers){
+    console.log(customer.name);
+  }
+}
+```
+
+How do you know that is exactly `result` structure?
+
+---
+
+```ts
+interface ICustomer{
+  name: string;
 }
 
+interface IMember {
+  business: {
+    customers: ICustomer[]
+  }
+}
+
+interface IResult {
+  response: {
+    data: {
+      members: IMember[]
+    }
+  }
+}
+
+const result = await fetch('https://domain.com') as IResult;
 ```
 
 ---
