@@ -150,19 +150,27 @@ Better?
 ---
 
 # JavaScript Object Complexitiy
+![bg](./assets/gradient.jpg)
+
 ---
 
 ```js
-const result = await fetch('https://domain.com');
+const result = await fetch('/get-members');
 for(const member of result.response.data.members){
   console.log(`My customer: `);
-  for(const customer of member.business.customers){
+  for(const customer of member.customers){
     console.log(customer.name);
   }
 }
 ```
 
 How do you know that is exactly `result` structure?
+
+
+---
+
+# Defining Type
+
 
 ---
 
@@ -172,11 +180,9 @@ interface ICustomer{
   birthDate: Date;
 }
 interface IMember {
-  business: {
-    name: string;
-    birthDate: Date;
-    customers: ICustomer[]
-  }
+  name: string;
+  birthDate: Date;
+  customers: ICustomer[]
 }
 interface IResult {
   response: {
@@ -186,21 +192,235 @@ interface IResult {
   }
 }
 
-const result = await fetch('https://domain.com') as IResult;
+const result = await fetch('/get-members') as IResult;
 ```
 
 ---
 
+# Type Reuse?
+
+---
+
+```ts
+interface IPerson {
+  name: string;
+  birthDate: Date;
+}
+
+interface ICustomer extends IPerson {}
+
+interface IMember extends IPerson {
+  customers: ICustomer[]
+}
+
+interface IResult {
+  response: {
+    data: {
+      members: IMember[]
+    }
+  }
+}
+
+const result = await fetch('/get-members') as IResult;
+```
+---
+
+# JavaScript Callback 
+
+---
+
+```js
+async function execute(callbacks){
+  for(let i = 0; i < callbacks.length; i++ ){
+    const callback = callbacks[i];
+    callback(i, 'ADD');
+  }
+}
+```
+
+---
+
+# Defining Callback Function Structure
+
+---
+
+## Something wrong ??
+
+```ts
+type Action = 'ADD' | 'DEL';
+
+interface ICallback {
+  callback: (id: number, action: Action) => void;
+} 
+
+async function execute(callbacks: ICallback[]){
+  for(let i = 0; i < callbacks.length; i++ ){
+    const callback = callbacks[i];
+    callback(i, 'ADD');
+  }
+}
+```
+
+---
+
+![w:1100px](assets/something-wrong.png)
+
+👉 [Debug with TypeScript Playground](https://www.typescriptlang.org/play?#code/C4TwDgpgBAggxsAlgewHZQLxQOQwCJ7ZQA+OeAogDLYDcAUHYqsBAE4BmAhnNAJIDCnADZCARtwDWUAN50oUOMLGSAXFAAUiACZrUAVwC2otgBoo3JGjXxLqAJSYAfFABuybfQC+UBpwDOIKhwUOx6QbZQEAAeEHB6LOqKIuJwEn5qAkopEgDaALp2svLsyKzqQhDAUIiYUAAMNNVQADwKWZJ+AHQVqADmwAAWjYgA1CNQhXLyCmh+VUnKqbUL2X45iHn0023JkppmuATYdltQnnTnQA)
+
+---
+
 # TypeScript Fact
+![bg](./assets/gradient.jpg)
 
 ---
 
 # 1. Can we use TypeScript without any type?
 
+```ts
+function add(a, b) {
+  return a + b;
+}
+```
+
 ---
 
 # Yes!
 
+Using configuration file, `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "noImplicitAny": false
+  }
+}
+```
+
 ---
 
-Ref: https://tsh.io/blog/why-use-typescript/
+Using `noImplicitAny: true` when force to allow type
+
+```ts
+function add(a: number, b: number) {
+  return a + b;
+}
+```
+
+using `any` type when you don't know the exactly type.
+
+---
+
+# 2. Different Type but same definition, is still same object?
+---
+
+```ts
+const util = require('util');s
+interface IMember {
+  firstName: string;
+}
+const mild1: IMember = {
+  firstName: 'Thada',
+}
+interface ICustomer {
+  firstName: string;
+}
+const mild2: ICustomer = {
+  firstName: 'Thada',
+}
+console.log(util.isDeepStrictEqual(mild1, mild2));
+// Result is True
+```
+TypeScript
+
+---
+
+```js
+const util = require('util');
+const mild1 = {
+    firstName: 'Thada',
+};
+const mild2 = {
+    firstName: 'Thada',
+};
+console.log(util.isDeepStrictEqual(mild1, mild2));
+// Result is True
+```
+
+Compile to JavaScript
+
+---
+
+# 3. Runtime Types is the Same as Declared Types?
+
+---
+
+### May be no!, 
+
+Let's see,
+
+```ts
+function setLightSwitch(value: boolean) {
+  if(value === true) turnLightOn();
+  else if (value === false) turnLightOff();
+  else console.log(`I'm afraid I can't do that.`);
+}
+```
+---
+
+```ts
+interface LightApiResponse {
+  value: boolean;
+}
+
+async function setLight() {
+  const response = await fetch('/light-status');
+  const result: LightApiResponse = await response.json();
+  setLightSwitch(result.value);
+}
+```
+
+If the API returns `string`, the function `setLightSwitch` will not get `boolean` value.
+
+---
+
+# 4. TypeScript Types Have Effect on Runtime Performance?
+---
+
+## No! , 
+
+Because types and type operations are erased when you generate JavaScript, they cannot have an effect on runtime performance. 
+
+---
+
+# 5. Can we complie TypeScript to JavaScript?
+
+---
+
+## Yes!
+
+```bash
+tsc ./app.ts
+node ./app.js
+```
+---
+
+# 6. Do we need to compile before run the TypeScript?
+---
+
+## No need!
+
+```bash
+ts-node ./app.ts
+# same as node ./app.js
+```
+
+---
+
+# <!-- fit --> Wish type be with you!
+---
+
+
+# Ref
+
+- https://tsh.io/blog/why-use-typescript/
+- Effective TypeScript
