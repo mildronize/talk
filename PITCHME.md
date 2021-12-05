@@ -169,14 +169,15 @@ How do you know that is exactly `result` structure?
 ```ts
 interface ICustomer{
   name: string;
+  birthDate: Date;
 }
-
 interface IMember {
   business: {
+    name: string;
+    birthDate: Date;
     customers: ICustomer[]
   }
 }
-
 interface IResult {
   response: {
     data: {
