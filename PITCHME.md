@@ -54,7 +54,7 @@ E-Mail       | thada.wth@gmail.com            |
 
 
 # "Why do I need static typing? 
-# If Typescript compiles to Javascript doesn’t it mean that Javascript is enough?"
+#### If Typescript compiles to Javascript doesn’t it mean that Javascript is enough?"
 
 ---
 
@@ -71,6 +71,9 @@ function getSalaryWithBonus(salary, bonus){
     return salary + bonus;
 }
 ```
+
+Really complicated financial system function
+
 ---
 
 ```js
@@ -93,61 +96,82 @@ In Typescript, you can explicitly define function parameters types
 
 ---
 
-![](assets/Why-use-Typescript-prevents-us-from-passing-wrong-type-argument-to-function_.png)
+![width:1100px](assets/Why-use-Typescript-prevents-us-from-passing-wrong-type-argument-to-function_.png)
 
-
-TypeScript prevents you from passing the wrong type of argument to the function
-
----
-
-![bg](#123)
-![](#fff)
-
-##### <!--fit--> [Marp CLI](https://github.com/marp-team/marp-cli) + [GitHub Pages](https://github.com/pages) | [Netlify](https://www.netlify.com/) | [Vercel](https://vercel.com/)
-
-##### <!--fit--> 👉 The easiest way to host<br />your Marp deck on the web
+<!-- TypeScript prevents you from passing the wrong type of argument to the function -->
 
 ---
 
-![bg right 60%](https://icongr.am/octicons/mark-github.svg)
-
-## **[GitHub Pages](https://github.com/pages)**
-
-#### Ready to write & host your deck!
-
-[![Use this as template h:1.5em](https://img.shields.io/badge/-Use%20this%20as%20template-brightgreen?style=for-the-badge&logo=github)](https://github.com/yhatt/marp-cli-example/generate)
+![](assets/why-use-typescript-typescript-meme_.png)
 
 ---
 
-![bg right 60%](https://icongr.am/simple/netlify.svg?colored)
+## Typescript documents itself
 
-## **[Netlify](https://www.netlify.com/)**
-
-#### Ready to write & host your deck!
-
-[![Deploy to Netlify h:1.5em](./assets/netlify-deploy-button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/yhatt/marp-cli-example)
-
----
-
-![bg right 60%](https://icongr.am/simple/zeit.svg)
-
-## **[Vercel](https://vercel.com/)**
-
-#### Ready to write & host your deck!
-
-[![Deploy to Vercel h:1.5em](https://vercel.com/button)](https://vercel.com/import/project?template=https://github.com/yhatt/marp-cli-example)
+```js
+function renderItems(items){
+    // here function does something with items
+}
+```
 
 ---
 
-### <!--fit--> :ok_hand:
+### If you want to know what “items” actually are in JavaScript, you have a few options:
+
+- read the documentation (if one exist),
+- add `console.log(items)` in the definition of this function, run the application and check the “items” argument in the console,
+- try to find out where the function is used and from there track down what data is put into it,
+- ask your colleagues if someone has been recently working on it,
 
 ---
 
-![bg 40% opacity blur](https://avatars1.githubusercontent.com/u/3993388?v=4)
+```ts
+type Item = {
+    id: number;
+    title: string;
+    description: string;
+}
 
-### Created by Yuki Hattori ([@yhatt](https://github.com/yhatt))
+function renderItems(items: Item[]){
+    // here function does something with items
+}
+```
 
-https://github.com/yhatt/marp-cli-example
+Better?
+
+---
+
+# Great for Code Editor Support
+
+- Mouse hover support 
+- Code auto-completion
+- Real-time type checking 
+- Easier code refactor
+---
+
+# JavaScript Object Complexitiy
+---
+
+```js
+const result = await fetch('https://domain.com');
+for(const member of result.response.data.members){
+    console.log(member.customers);
+    
+}
+
+```
+
+---
+
+# TypeScript Fact
+
+---
+
+# 1. Can we use TypeScript without any type?
+
+---
+
+# Yes!
 
 ---
 
